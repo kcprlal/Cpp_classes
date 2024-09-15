@@ -260,10 +260,10 @@ void Board::makeMove(bool xplays, int moveFrom, int moveTo)
 
 int Board::checkForWin(){
     if(Xpawns==0){
-        return 0;
+        return 1;
     }
     else if(Opawns==0){
-        return 1;
+        return 2;
     }
     else return false;
 }
@@ -292,11 +292,11 @@ int main()
         b.makeMove(false, moveFrom, moveTo);
         switch (b.checkForWin())
         {
-        case 0:
+        case 1:
             cout<<"X WINS!";
             continuegame=0;
             break;
-        case 1:
+        case 2:
             cout<<"O WINS!";
             continuegame=0;
             break;
