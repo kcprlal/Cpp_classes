@@ -8,14 +8,19 @@ public:
     void restart();
     void setupBoard();
     void makeMove(bool, int, int);
-    bool checkIfLegal(int, int, int);
+    bool checkIfLegal(int, int, int, bool, bool);
+    int checkForWin();
 
 private:
     char field[64];
+    int Xpawns;
+    int Opawns;
 };
 
 void Board::setupBoard()
 {
+    Xpawns = 8;
+    Opawns = 8;
     for (int k = 0; k < 64; ++k)
     {
         field[k] = ' ';
@@ -30,7 +35,7 @@ void Board::setupBoard()
         field[6 * 8 + i] = 'o';
         field[9 + i + 6 * 8] = 'o';
     }
-    //Just to test
+    // Just to test
     /*field[27]='x';
     field[34]='o';
     field[36]='o';*/
@@ -53,45 +58,131 @@ void Board::drawBoard()
     }
 }
 
-bool Board::checkIfLegal(int state, int moveFrom, int moveTo)
+bool Board::checkIfLegal(int state, int moveFrom, int moveTo, bool onLeft, bool onRight)
 {
     if (state == 0)
     {
-        if (field[moveFrom] == 'x' && field[moveTo] == ' ' && (moveTo - moveFrom == 7 || moveTo - moveFrom == 9))
-            return true;
+        if (onLeft)
+        {
+            if (field[moveFrom] == 'x' && field[moveTo] == ' ' && (moveTo - moveFrom == 9))
+                return true;
+            else
+                return false;
+        }
+        else if (onRight)
+        {
+            if (field[moveFrom] == 'x' && field[moveTo] == ' ' && (moveTo - moveFrom == 7))
+                return true;
+            else
+                return false;
+        }
+        else
+        {
+            if (field[moveFrom] == 'x' && field[moveTo] == ' ' && (moveTo - moveFrom == 7 || moveTo - moveFrom == 9))
+                return true;
+        }
     }
 
     else if (state == 1)
     {
-        if (field[moveTo] == ' ' && moveTo - moveFrom == 14 && field[moveTo - 7] == 'o')
+        if (onLeft)
         {
-            field[moveTo-7]=' ';
-            return true;
+            if (field[moveTo] == ' ' && moveTo - moveFrom == 14 && field[moveTo - 7] == 'o')
+            {
+                field[moveTo - 7] = ' ';
+                return true;
+            }
+            else
+                return false;
         }
-        else if (field[moveTo] == ' ' && moveTo - moveFrom == 18 && field[moveTo -  9] == 'o')
+
+        if (onRight)
         {
-            field[moveTo-9]=' ';
-            return true;
+            if (field[moveTo] == ' ' && moveTo - moveFrom == 18 && field[moveTo - 9] == 'o')
+            {
+                field[moveTo - 9] = ' ';
+                return true;
+            }
+            else
+                return false;
+        }
+
+        else
+        {
+            if (field[moveTo] == ' ' && moveTo - moveFrom == 14 && field[moveTo - 7] == 'o')
+            {
+                field[moveTo - 7] = ' ';
+                return true;
+            }
+            else if (field[moveTo] == ' ' && moveTo - moveFrom == 18 && field[moveTo - 9] == 'o')
+            {
+                field[moveTo - 9] = ' ';
+                return true;
+            }
         }
     }
 
     else if (state == 2)
     {
-        if (field[moveFrom] == 'o' && field[moveTo] == ' ' && (moveFrom - moveTo == 7 || moveFrom - moveTo == 9))
-            return true;
+        if (onLeft)
+        {
+            if (field[moveFrom] == 'o' && field[moveTo] == ' ' && moveFrom - moveTo == 7)
+                return true;
+            else
+                return false;
+        }
+
+        if (onRight)
+        {
+            if (field[moveFrom] == 'o' && field[moveTo] == ' ' && moveFrom - moveTo == 9)
+                return true;
+            else
+                return false;
+        }
+
+        else
+        {
+            if (field[moveFrom] == 'o' && field[moveTo] == ' ' && (moveFrom - moveTo == 7 || moveFrom - moveTo == 9))
+                return true;
+        }
     }
 
     else if (state == 3)
     {
-        if (field[moveTo] == ' ' && moveFrom - moveTo == 14 && field[moveTo + 7] == 'x')
+        if (onLeft)
         {
-            field[moveTo+7]=' ';
-            return true;
+            if (field[moveTo] == ' ' && moveFrom - moveTo == 14 && field[moveTo + 7] == 'x')
+            {
+                field[moveTo + 7] = ' ';
+                return true;
+            }
+            else
+                return false;
         }
-        else if (field[moveTo] == ' ' && moveFrom - moveTo == 18 && field[moveTo +  9] == 'x')
+
+        if (onRight)
         {
-            field[moveTo+9]=' ';
-            return true;
+            if (field[moveTo] == ' ' && moveFrom - moveTo == 18 && field[moveTo + 9] == 'x')
+            {
+                field[moveTo + 9] = ' ';
+                return true;
+            }
+            else
+                return false;
+        }
+
+        else
+        {
+            if (field[moveTo] == ' ' && moveFrom - moveTo == 14 && field[moveTo + 7] == 'x')
+            {
+                field[moveTo + 7] = ' ';
+                return true;
+            }
+            else if (field[moveTo] == ' ' && moveFrom - moveTo == 18 && field[moveTo + 9] == 'x')
+            {
+                field[moveTo + 9] = ' ';
+                return true;
+            }
         }
     }
 
@@ -100,17 +191,39 @@ bool Board::checkIfLegal(int state, int moveFrom, int moveTo)
 
 void Board::makeMove(bool xplays, int moveFrom, int moveTo)
 {
+    bool onSiteLeft = false;
+    bool onSiteRight = false;
+    bool onSiteRightTake = false;
+    bool onSiteLeftTake = false;
+    if (moveFrom % 8 == 0)
+    {
+        onSiteLeft = true;
+    }
+    else if (moveFrom % 8 == 7)
+    {
+        onSiteRight = true;
+    }
+    else if (moveFrom % 8 == 6)
+    {
+        onSiteRightTake = true;
+    }
+    else if (moveFrom % 8 == 1)
+    {
+        onSiteLeftTake = true;
+    }
+
     if (xplays)
     {
-        if (checkIfLegal(0, moveFrom, moveTo))
+        if (checkIfLegal(0, moveFrom, moveTo, onSiteLeft, onSiteRight))
         {
             field[moveFrom] = ' ';
             field[moveTo] = 'x';
         }
-        else if (checkIfLegal(1, moveFrom, moveTo))
+        else if (checkIfLegal(1, moveFrom, moveTo, onSiteLeftTake, onSiteRightTake))
         {
             field[moveFrom] = ' ';
             field[moveTo] = 'x';
+            Opawns-=1;
         }
 
         else
@@ -123,15 +236,16 @@ void Board::makeMove(bool xplays, int moveFrom, int moveTo)
     }
     else
     {
-        if (checkIfLegal(2, moveFrom, moveTo))
+        if (checkIfLegal(2, moveFrom, moveTo, onSiteLeft, onSiteRight))
         {
             field[moveFrom] = ' ';
             field[moveTo] = 'o';
         }
-        else if (checkIfLegal(3, moveFrom, moveTo))
+        else if (checkIfLegal(3, moveFrom, moveTo, onSiteLeftTake, onSiteRightTake))
         {
             field[moveFrom] = ' ';
             field[moveTo] = 'o';
+            Xpawns-=1;
         }
 
         else
@@ -142,6 +256,16 @@ void Board::makeMove(bool xplays, int moveFrom, int moveTo)
             makeMove(false, moveFrom, moveTo);
         }
     }
+}
+
+int Board::checkForWin(){
+    if(Xpawns==0){
+        return 0;
+    }
+    else if(Opawns==0){
+        return 1;
+    }
+    else return false;
 }
 
 int main()
@@ -166,6 +290,19 @@ int main()
         cin >> moveFrom >> moveTo;
         cout << "\n";
         b.makeMove(false, moveFrom, moveTo);
+        switch (b.checkForWin())
+        {
+        case 0:
+            cout<<"X WINS!";
+            continuegame=0;
+            break;
+        case 1:
+            cout<<"O WINS!";
+            continuegame=0;
+            break;
+        default:
+            continue;;
+        }
     }
     return 0;
 }
