@@ -15,6 +15,10 @@ private:
     char field[64];
     int Xpawns;
     int Opawns;
+    bool onSiteLeft;
+    bool onSiteRight;
+    bool onSiteLeftTake;
+    bool onSiteRightTake;
 };
 
 void Board::setupBoard()
@@ -87,9 +91,9 @@ bool Board::checkIfLegal(int state, int moveFrom, int moveTo, bool onLeft, bool 
     {
         if (onLeft)
         {
-            if (field[moveTo] == ' ' && moveTo - moveFrom == 14 && field[moveTo - 7] == 'o')
+            if (field[moveTo] == ' ' && moveTo - moveFrom == 18 && field[moveTo - 9] == 'o')
             {
-                field[moveTo - 7] = ' ';
+                field[moveTo - 9] = ' ';
                 return true;
             }
             else
@@ -98,9 +102,9 @@ bool Board::checkIfLegal(int state, int moveFrom, int moveTo, bool onLeft, bool 
 
         if (onRight)
         {
-            if (field[moveTo] == ' ' && moveTo - moveFrom == 18 && field[moveTo - 9] == 'o')
+            if (field[moveTo] == ' ' && moveTo - moveFrom == 14 && field[moveTo - 7] == 'o')
             {
-                field[moveTo - 9] = ' ';
+                field[moveTo - 7] = ' ';
                 return true;
             }
             else
@@ -191,10 +195,10 @@ bool Board::checkIfLegal(int state, int moveFrom, int moveTo, bool onLeft, bool 
 
 void Board::makeMove(bool xplays, int moveFrom, int moveTo)
 {
-    bool onSiteLeft = false;
-    bool onSiteRight = false;
-    bool onSiteRightTake = false;
-    bool onSiteLeftTake = false;
+    onSiteLeft = false;
+    onSiteRight = false;
+    onSiteRightTake = false;
+    onSiteLeftTake = false;
     if (moveFrom % 8 == 0)
     {
         onSiteLeft = true;
@@ -223,7 +227,6 @@ void Board::makeMove(bool xplays, int moveFrom, int moveTo)
         {
             field[moveFrom] = ' ';
             field[moveTo] = 'x';
-            Opawns-=1;
         }
 
         else
@@ -245,7 +248,6 @@ void Board::makeMove(bool xplays, int moveFrom, int moveTo)
         {
             field[moveFrom] = ' ';
             field[moveTo] = 'o';
-            Xpawns-=1;
         }
 
         else
@@ -265,7 +267,7 @@ int Board::checkForWin(){
     else if(Opawns==0){
         return 2;
     }
-    else return false;
+    else return 0;
 }
 
 int main()
