@@ -10,8 +10,8 @@ int main()
   bool hascopy = false;
   std::string i;
   std::vector<std::string> pc_photos = {}, phone_photos = {}, no_copy = {};
-  std::string pathinPC = "D:/"; // add your path here
-  std::string pathinPhone = "D:/";   // add your path here
+  std::string pathinPC = "D:/Downloads"; // add your path here
+  std::string pathinPhone = "D:/zdjecia mielno";   // add your path here
   for (const auto &element : std::filesystem::directory_iterator(pathinPC))
   {
     i = element.path().filename().string();
