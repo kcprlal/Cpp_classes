@@ -1,38 +1,24 @@
 #include <iostream>
 
-using namespace std;
-
-class test
-{
-private:
-  int element,element2;
+class Animal {
 public:
-  test(int el1, int el2);
-  ~test();
-  void setElement(int element1){
-    this -> element = element1;
-  }
-  void display();
+    virtual ~Animal() {
+        std::cout << "ANIMAL DESTRUCTOR" << std::endl;
+    }
 };
 
-test::test(int el1, int el2):element(el1),element2(el2)
-{
-}
+class Dog : public Animal {
+public:
+    ~Dog() {
+        std::cout << "DOG DESTRUCTOR" << std::endl;
+    }
+};
 
-test::~test()
-{
-}
+int main() {
+    Dog dog;
+    Animal *animal = new Dog();
 
-void test::display(){
-  cout<<"element1: "<<element<<endl;
-  cout<<"element2: "<<element2<<endl;
-}
-
-int main()
-{
-  test obj{3,4};
-  obj.display();
-  obj.setElement(124);
-  obj.display();
-  return 0;
+    delete animal;
+    
+    return 0;
 }

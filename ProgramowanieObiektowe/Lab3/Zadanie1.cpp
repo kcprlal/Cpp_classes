@@ -19,6 +19,10 @@ public:
         // body of a constructor
     }
 
+    ~Student() {
+        std::cout<<"D:<"<<std::endl;
+    }
+
     void introduce(void) const
     {
         std::cout << "I'm " << name << ", I am a "

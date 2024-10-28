@@ -16,5 +16,5 @@ public:
     double getX();
     double getY();
 };
-
+   
 #endif
