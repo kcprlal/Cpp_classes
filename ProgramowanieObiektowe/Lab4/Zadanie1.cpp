@@ -1,6 +1,10 @@
 #include<iostream>
 
-class Animal
+namespace kl{
+    class Animal;
+}
+
+class kl::Animal
 {
 public:
    virtual void makeSound()=0;
@@ -10,7 +14,7 @@ public:
 };
 
 
-class Dog : public Animal{
+class Dog : public kl::Animal{
     public:
         void makeSound() override {
             std::cout<<"Woof!"<<std::endl;
@@ -20,7 +24,7 @@ class Dog : public Animal{
         }
 };
 
-class Cat : public Animal{
+class Cat : public kl::Animal{
     public:
         void makeSound() override{
             std::cout<<"Meow!"<<std::endl;
@@ -30,7 +34,7 @@ class Cat : public Animal{
         }
 };
 
-Animal* chooseAnimal(int number){
+kl::Animal* chooseAnimal(int number){
     if (number%2 == 0) {
         return new Dog();
     } else {
@@ -43,7 +47,7 @@ int main(){
     int x{};
     std::cin >> x;
 
-    Animal *animal = chooseAnimal(x);
+    kl::Animal *animal = chooseAnimal(x);
     animal->makeSound();
     delete animal;
     return 0;

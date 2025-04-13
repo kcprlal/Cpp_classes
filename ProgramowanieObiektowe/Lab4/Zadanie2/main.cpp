@@ -21,7 +21,7 @@ int main() {
     rectangle2.setB(-5);
     rectangle2.introduce();
     rectangle2.description();
-    std::cout << "Area of rectangle is: " << rectangle.area() << std::endl;
+    std::cout << "Area of rectangle is: " << rectangle2.area() << std::endl;
 
     Circle circle(4,Point(15,15));
     circle.introduce();

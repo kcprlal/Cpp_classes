@@ -1,24 +1,37 @@
 #include <iostream>
 
-class Animal {
+class Animal
+{
 public:
-    virtual ~Animal() {
-        std::cout << "ANIMAL DESTRUCTOR" << std::endl;
+    virtual void sound()
+    {
+        std::cout << "du" << std::endl;
     }
 };
 
-class Dog : public Animal {
+class Dog : public Animal
+{
 public:
-    ~Dog() {
-        std::cout << "DOG DESTRUCTOR" << std::endl;
+    void sound() override
+    {
+        std::cout << "du1" << std::endl;
     }
 };
 
-int main() {
+class Cat : public Animal
+{
+    public: 
+    void sound()
+    {
+        std::cout << "du2" << std::endl;
+    }
+};
+
+int main()
+{
     Dog dog;
-    Animal *animal = new Dog();
-
-    delete animal;
-    
+    Animal *ptr = new Dog();
+    ptr -> sound();
+    delete ptr;
     return 0;
 }

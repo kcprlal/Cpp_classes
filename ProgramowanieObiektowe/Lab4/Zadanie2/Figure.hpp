@@ -6,7 +6,7 @@
 
 class Figure
 {
-protected:
+private:
     std::string m_name;
     Point m_centre;
 
